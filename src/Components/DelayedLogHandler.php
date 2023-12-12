@@ -42,6 +42,14 @@ class DelayedLogHandler extends AbstractProcessingHandler implements DelayedLogH
     }
 
     /**
+     * @return string
+     */
+    public function queue(): string
+    {
+        return $this->queue;
+    }
+
+    /**
      * @return array
      */
     public function __serialize(): array

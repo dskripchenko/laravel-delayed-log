@@ -11,7 +11,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class DelayedLogJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+
+    public int $tries = 1;
 
     /**
      * @var DelayedLogHandler
@@ -24,6 +29,7 @@ class DelayedLogJob implements ShouldQueue
     public function __construct(DelayedLogHandler $handler)
     {
         $this->handler = $handler;
+        $this->onQueue($handler->queue());
     }
 
     /**
