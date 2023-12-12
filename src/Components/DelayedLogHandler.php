@@ -116,6 +116,6 @@ class DelayedLogHandler extends AbstractProcessingHandler implements DelayedLogH
     public function process(): void
     {
         Log::channel($this->channel)
-            ->log($this->record->level, $this->record->message, $this->record->context);
+            ->log($this->record->level->getName(), $this->record->message, $this->record->context);
     }
 }
