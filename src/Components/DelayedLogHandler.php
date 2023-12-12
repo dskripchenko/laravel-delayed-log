@@ -2,11 +2,11 @@
 
 namespace Dskripchenko\LaravelDelayedLog\Components;
 
+use DateTimeImmutable;
 use Dskripchenko\LaravelDelayedLog\Interfaces\DelayedLogHandler as DelayedLogHandlerInterface;
 use Dskripchenko\LaravelDelayedLog\Jobs\DelayedLogJob;
+use Exception;
 use Illuminate\Support\Facades\Log;
-use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
-use Laravel\SerializableClosure\SerializableClosure;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
@@ -42,21 +42,23 @@ class DelayedLogHandler extends AbstractProcessingHandler implements DelayedLogH
     }
 
     /**
-     * @throws PhpVersionNotSupportedException
+     * @return array
      */
     public function __serialize(): array
     {
-        $record = $this->record;
-        $serializedRecord = serialize(new SerializableClosure(function () use ($record) {
-            return $record;
-        }));
-
         return [
             'queue' => $this->queue,
             'channel' => $this->channel,
             'level' => $this->level,
             'bubble' => $this->bubble,
-            'record' => $serializedRecord
+            'record' => [
+                'message' => $this->record->message,
+                'level' => $this->record->level->getName(),
+                'channel' => $this->record->channel,
+                'datetime' => $this->record->datetime,
+                'context' => data_get($this->record->formatted, 'context'),
+                'extra' => data_get($this->record->formatted, 'extra'),
+            ]
         ];
     }
 
@@ -64,7 +66,6 @@ class DelayedLogHandler extends AbstractProcessingHandler implements DelayedLogH
      * @param array $data
      *
      * @return void
-     * @throws PhpVersionNotSupportedException
      */
     public function __unserialize(array $data): void
     {
@@ -73,11 +74,27 @@ class DelayedLogHandler extends AbstractProcessingHandler implements DelayedLogH
         $this->level = data_get($data, 'level');
         $this->bubble = data_get($data, 'bubble');
 
-        $record = (string) data_get($data, 'record');
-        /** @var SerializableClosure $serializableClosure */
-        $serializableClosure = unserialize($record, ['allowed_classes' => [SerializableClosure::class]]);
-        $closure = $serializableClosure->getClosure();
-        $this->record = $closure();
+        $message = data_get($data, 'record.message');
+        $level = data_get($data, 'record.level');
+        $channel = data_get($data, 'record.channel');
+        $context = data_get($data, 'record.context');
+        $extra = data_get($data, 'record.extra');
+
+        try {
+            $datetime = new DateTimeImmutable(data_get($data, 'record.datetime'));
+        }
+        catch (Exception) {
+            $datetime = new DateTimeImmutable();
+        }
+
+        $this->record = new LogRecord(
+            $datetime,
+            $channel,
+            Level::fromName($level),
+            $message,
+            $context,
+            $extra
+        );
     }
 
     /**

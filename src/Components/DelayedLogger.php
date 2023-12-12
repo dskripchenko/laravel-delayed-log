@@ -3,7 +3,7 @@
 namespace Dskripchenko\LaravelDelayedLog\Components;
 
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Formatter\LineFormatter;
+use Monolog\Formatter\NormalizerFormatter;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
@@ -47,15 +47,8 @@ class DelayedLogger
      */
     protected function getFormatter(array $config): FormatterInterface
     {
-        $formatter = data_get($config, 'formatter.class', LineFormatter::class);
-        $options = (array) data_get($config, "formatter.options.{$formatter}");
-        $formatter = app($formatter, $options);
-
-        if (!($formatter instanceof FormatterInterface)) {
-            return new LineFormatter();
-        }
-
-        return $formatter;
+        $dateformat = data_get($config, 'dateformat');
+        return new NormalizerFormatter($dateformat);
     }
 
 }

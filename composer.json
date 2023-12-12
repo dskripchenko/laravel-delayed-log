@@ -18,8 +18,7 @@
         "php": "^8.2",
         "monolog/monolog": "^3.5",
         "laravel/framework": "10.*",
-        "dskripchenko/php-array-helper": "^1.1",
-        "laravel/serializable-closure": "^1.3"
+        "dskripchenko/php-array-helper": "^1.1"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master"
