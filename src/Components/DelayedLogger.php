@@ -25,7 +25,7 @@ class DelayedLogger
      */
     public function getLoggerName(): string
     {
-        return 'logstash';
+        return 'delayed';
     }
 
     /**
