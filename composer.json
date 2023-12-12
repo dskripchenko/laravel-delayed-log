@@ -1,0 +1,40 @@
+{
+    "name": "dskripchenko/laravel-delayed-log",
+    "description": "Delayed logging.",
+    "license": "MIT",
+    "homepage": "https://github.com/dskripchenko/laravel-delayed-log",
+    "keywords": [
+        "laravel",
+        "delayed",
+        "logs"
+    ],
+    "authors": [
+        {
+            "name": "Denis Skripchenko",
+            "email": "denskrp90@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "monolog/monolog": "^3.5",
+        "laravel/framework": "10.*",
+        "dskripchenko/php-array-helper": "^1.1"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dskripchenko\\LaravelDelayedLog\\": [
+                "src/"
+            ]
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dskripchenko\\LaravelDelayedLog\\Providers\\DelayedLogServiceProvider"
+            ]
+        }
+    }
+}
