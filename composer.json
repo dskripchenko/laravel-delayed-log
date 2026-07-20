@@ -20,9 +20,6 @@
         "laravel/framework": "^11.0 || ^12.0 || ^13.0",
         "dskripchenko/php-array-helper": "^1.1"
     },
-    "require-dev": {
-        "roave/security-advisories": "dev-master"
-    },
     "autoload": {
         "psr-4": {
             "Dskripchenko\\LaravelDelayedLog\\": [
