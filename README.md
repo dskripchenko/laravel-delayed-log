@@ -4,8 +4,10 @@ Asynchronous logging for Laravel. Log records are pushed onto a **queue** and
 written by a job instead of blocking the request — useful when your log target
 is slow (HTTP log sinks, external aggregators, etc.).
 
+> 🌐 **English** · [Deutsch](docs/de/README.md) · [Русский](docs/ru/README.md) · [中文](docs/zh/README.md)
+
 [![Packagist](https://img.shields.io/packagist/v/dskripchenko/laravel-delayed-log)](https://packagist.org/packages/dskripchenko/laravel-delayed-log)
-[![License](https://img.shields.io/packagist/l/dskripchenko/laravel-delayed-log)](LICENSE)
+[![License](https://img.shields.io/packagist/l/dskripchenko/laravel-delayed-log)](LICENSE.md)
 
 ## Requirements
 
@@ -56,4 +58,4 @@ originating request never waits on the log write.
 
 ## License
 
-[MIT](LICENSE) © Denis Skripchenko
+[MIT](LICENSE.md) © Denis Skripchenko
